@@ -28,7 +28,9 @@ PyMuPDF4LLM
 
 PyMuPDF
 
-Project Structure
+## Project Structure
+
+```text
 HybridRAG/
 │
 ├── main.py
@@ -39,6 +41,7 @@ HybridRAG/
 ├── requirements.txt
 ├── .gitignore
 └── README.md
+
 
 Setup
 1. Clone the project
