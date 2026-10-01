@@ -1,160 +1,217 @@
-HybridRAG
+🚀 HybridRAG
 
-A FastAPI-based PDF processing application that allows users to upload PDF files, convert PDF content into Markdown using PyMuPDF4LLM, and extract embedded images using PyMuPDF.
+HybridRAG is a Python-based Retrieval-Augmented Generation (RAG) project designed to process PDF documents and prepare their content for intelligent retrieval and question answering.
 
-Features
+The project currently provides a FastAPI-based PDF processing pipeline that allows users to upload PDF files, convert them into Markdown using PyMuPDF4LLM, and extract embedded images using PyMuPDF.
 
-Upload PDF files through a REST API
+✨ Features
 
-Validate PDF file uploads
+📄 PDF document upload
 
-Save uploaded PDFs locally
+✅ PDF file validation
 
-Convert PDF documents to Markdown
+💾 Local PDF storage
 
-Extract embedded images from PDFs
+📝 PDF → Markdown conversion
 
-Save extracted images separately
+🖼️ Embedded image extraction
 
-FastAPI Swagger documentation
+📁 Separate image storage
 
-Easy local development setup
+⚡ FastAPI REST API
 
-Tech Stack
+📚 Interactive Swagger API documentation
 
-Python
+🧩 Modular project structure
 
-FastAPI
+🔍 Foundation for a future RAG pipeline
 
-Uvicorn
-
-PyMuPDF4LLM
-
-PyMuPDF
-
-REST API
-
-Project Structure
+🛠️ Tech Stack
+Technology	Purpose
+🐍 Python	Core programming language
+⚡ FastAPI	REST API framework
+🚀 Uvicorn	ASGI server
+📄 PyMuPDF4LLM	PDF to Markdown conversion
+🔧 PyMuPDF	PDF processing and image extraction
+🔗 REST API	Client-server communication
+📂 Project Structure
 HybridRAG/
 │
-├── env/
+├── retrivers/
 │
-├── uploads/
-│   ├── example.pdf
-│   ├── example.md
-│   └── example_images/
-│       ├── page_1_image_1.png
-│       └── page_2_image_1.jpg
-│
+├── config.py
+├── ingestion.py
 ├── main.py
+├── pipeline.py
 ├── requirements.txt
 ├── .gitignore
 └── README.md
 
-
-The env/ directory should not be pushed to GitHub. Generated files inside uploads/ should also normally be excluded from Git.
-
-Installation
-1. Clone the repository
-git clone <your-github-repository-url>
+Main Components
+File / Directory	Description
+main.py	FastAPI application and API endpoints
+ingestion.py	Document ingestion and processing logic
+pipeline.py	RAG processing pipeline
+config.py	Application configuration
+retrivers/	Retrieval-related components
+requirements.txt	Python dependencies
+.gitignore	Files excluded from Git
+README.md	Project documentation
+⚙️ Installation
+1. Clone the Repository
+git clone https://github.com/bibekpandey0521/HybridRAG.git
 cd HybridRAG
 
-2. Create a virtual environment
+2. Create a Virtual Environment
 python -m venv env
 
-3. Activate the virtual environment
-
-For Windows Git Bash:
-
+3. Activate the Virtual Environment
+Windows — Git Bash
 source env/Scripts/activate
 
 
-You should see:
+After activation, your terminal should show:
 
 (env)
 
-4. Install dependencies
+Windows — Command Prompt
+env\Scripts\activate
+
+Windows — PowerShell
+env\Scripts\Activate.ps1
+
+4. Install Dependencies
+
+Install the project dependencies:
+
 pip install -r requirements.txt
 
 
-If you do not have requirements.txt, install the dependencies manually:
+If you are setting up the project for the first time and requirements.txt is not available, install the main dependencies manually:
 
 pip install "fastapi[standard]"
-pip install pymupdf4llm
-pip install pymupdf
 pip install uvicorn
+pip install pymupdf
+pip install pymupdf4llm
+pip install python-multipart
 
 
 Then generate the requirements file:
 
 pip freeze > requirements.txt
 
-Running the Application
+▶️ Running the Application
 
-Start the FastAPI server:
+Make sure the virtual environment is activated:
+
+source env/Scripts/activate
+
+
+Start the FastAPI development server:
 
 python -m uvicorn main:app --reload
 
 
-The application will run at:
+The server should start at:
 
 http://127.0.0.1:8000
 
-Swagger API Documentation
+📚 Swagger API Documentation
 
-FastAPI provides interactive API documentation through Swagger UI.
+FastAPI provides an interactive Swagger UI for testing the API.
 
 Open:
 
 http://127.0.0.1:8000/docs
 
 
-You can test the API directly from the Swagger interface.
+You can use Swagger to:
 
-API Endpoints
-Upload PDF
+Upload PDF files
+
+Test API endpoints
+
+View request parameters
+
+View API responses
+
+Test the PDF processing workflow
+
+🔌 API Endpoints
+📤 Upload PDF
 POST /upload-pdf
 
 
-Uploads a PDF file and saves it inside the uploads directory.
+Uploads a PDF document to the application.
 
-Example response:
+Workflow
+PDF File
+   │
+   ▼
+Validate File
+   │
+   ▼
+Save PDF
+   │
+   ▼
+Store File Path
 
+Example Response
 {
     "message": "PDF uploaded successfully",
     "filename": "sample.pdf",
     "saved_path": "uploads/sample.pdf"
 }
 
-Convert PDF to Markdown
+📝 Convert PDF to Markdown
 POST /pdf-to-markdown
 
 
-This endpoint:
+Processes the latest uploaded PDF.
+
+Processing Steps
+Uploaded PDF
+     │
+     ▼
+PyMuPDF4LLM
+     │
+     ▼
+Markdown Content
+     │
+     ├───────────────┐
+     ▼               ▼
+ .md file       Extract Images
+                     │
+                     ▼
+                Image Folder
+
+
+The endpoint:
 
 Finds the latest uploaded PDF.
 
-Converts the PDF into Markdown.
+Converts PDF content into Markdown.
 
-Saves the Markdown file.
+Saves the generated Markdown file.
+
+Opens the PDF using PyMuPDF.
 
 Extracts embedded images.
 
-Saves the extracted images into a separate folder.
+Saves the images separately.
 
-Example output:
-
+Example Output
 uploads/
+│
 ├── sample.pdf
 ├── sample.md
+│
 └── sample_images/
     ├── page_1_image_1.png
     ├── page_1_image_2.jpg
     └── page_2_image_1.png
 
-
-Example response:
-
+Example Response
 {
     "message": "PDF converted successfully",
     "pdf_file": "uploads/sample.pdf",
@@ -168,60 +225,69 @@ Example response:
     ]
 }
 
-Application Workflow
-        PDF File
-           │
-           ▼
-    ┌──────────────┐
-    │ Upload PDF   │
-    └──────┬───────┘
-           │
-           ▼
-    ┌──────────────┐
-    │ Save PDF     │
-    └──────┬───────┘
-           │
-           ▼
-    ┌──────────────────┐
-    │ PyMuPDF4LLM      │
-    │ PDF → Markdown   │
-    └────────┬─────────┘
-             │
-       ┌─────┴──────┐
-       ▼            ▼
-   Markdown      Images
-       │            │
-       ▼            ▼
-   .md file    Image folder
+🔄 Current Processing Pipeline
+                 ┌──────────────┐
+                 │   PDF File   │
+                 └──────┬───────┘
+                        │
+                        ▼
+              ┌──────────────────┐
+              │   FastAPI Upload │
+              └────────┬─────────┘
+                       │
+                       ▼
+              ┌──────────────────┐
+              │   Save PDF       │
+              └────────┬─────────┘
+                       │
+                       ▼
+              ┌──────────────────┐
+              │   PyMuPDF4LLM    │
+              │  PDF → Markdown  │
+              └────────┬─────────┘
+                       │
+                 ┌─────┴─────┐
+                 │           │
+                 ▼           ▼
+           ┌──────────┐ ┌───────────┐
+           │ Markdown │ │   Images  │
+           │   .md    │ │ Extracted │
+           └──────────┘ └───────────┘
 
-Example Usage
-
-Start the server:
-
+🧪 Example Usage
+Step 1 — Start the Server
 python -m uvicorn main:app --reload
 
-
-Open Swagger:
-
+Step 2 — Open Swagger
 http://127.0.0.1:8000/docs
 
+Step 3 — Upload a PDF
+
+In Swagger:
+
+Open POST /upload-pdf
+
+Click Try it out
+
+Select a PDF file
+
+Click Execute
+
+Step 4 — Convert the PDF
 
 Then:
 
-1. Open POST /upload-pdf
-2. Click "Try it out"
-3. Select a PDF
-4. Click "Execute"
-5. Open POST /pdf-to-markdown
-6. Click "Try it out"
-7. Click "Execute"
+Open POST /pdf-to-markdown
 
+Click Try it out
 
-The converted Markdown and extracted images will be stored in the uploads directory.
+Click Execute
 
-requirements.txt
+The application will process the uploaded PDF and generate the Markdown and extracted images.
 
-Example:
+📦 Dependencies
+
+The main dependencies include:
 
 fastapi
 uvicorn
@@ -230,13 +296,17 @@ pymupdf4llm
 python-multipart
 
 
-python-multipart is required by FastAPI for handling file uploads.
+Install all dependencies using:
 
-.gitignore
+pip install -r requirements.txt
 
-Create a .gitignore file in the project root:
+🚫 Git Ignore
 
-# Virtual environment
+The local virtual environment should not be pushed to GitHub.
+
+Recommended .gitignore:
+
+# Virtual environments
 env/
 venv/
 .venv/
@@ -247,15 +317,10 @@ __pycache__/
 
 # Environment variables
 .env
+.env.*
 
-# Generated PDF files
-uploads/*.pdf
-
-# Generated Markdown files
-uploads/*.md
-
-# Extracted images
-uploads/*_images/
+# Generated files
+uploads/
 
 # IDE
 .vscode/
@@ -265,53 +330,98 @@ uploads/*_images/
 .DS_Store
 Thumbs.db
 
-Git Commands
+🌱 Git Workflow
 
-Check the files that will be committed:
+Check the current repository status:
 
 git status
 
 
-Add files:
+Add changes:
 
 git add .
 
 
 Commit:
 
-git commit -m "Add PDF processing API"
+git commit -m "Improve PDF processing pipeline"
 
 
 Push to GitHub:
 
 git push origin main
 
-Future Improvements
+🔮 Future Improvements
 
-Planned improvements may include:
+The project is intended to evolve into a complete RAG system.
 
-PDF text chunking
+Planned improvements include:
 
-Embedding generation
+🧩 PDF text chunking
 
-Vector database integration
+🧠 Embedding generation
 
-Semantic search
+🗄️ Vector database integration
 
-RAG pipeline
+🔎 Semantic search
 
-LLM integration
+🤖 LLM integration
 
-Multiple document support
+📚 Complete RAG pipeline
 
-Document metadata extraction
+📄 Multiple document support
 
-Persistent document storage
+🏷️ Document metadata extraction
 
-Authentication
+💾 Persistent document storage
 
-Background PDF processing
+🔐 Authentication and authorization
 
-License
+⚡ Background document processing
 
-This project is for learning and development purposes.
+📊 Document processing status
+
+💬 Question answering over uploaded documents
+
+🎯 Project Vision
+
+The long-term goal of HybridRAG is to build a complete document intelligence pipeline:
+
+PDF Documents
+      │
+      ▼
+Document Ingestion
+      │
+      ▼
+PDF Processing
+      │
+      ├───────────────┐
+      ▼               ▼
+   Markdown         Images
+      │
+      ▼
+Text Chunking
+      │
+      ▼
+Embeddings
+      │
+      ▼
+Vector Database
+      │
+      ▼
+Retrieval
+      │
+      ▼
+LLM
+      │
+      ▼
+Answer
+
+📌 Repository
+
+GitHub:
+https://github.com/bibekpandey0521/HybridRAG
+
+📜 License
+
+This project is currently intended for learning and development purposes.
